@@ -20,7 +20,7 @@ model Boat {
   name        String
   type        String?
   capacity    Int
-  hourlyRate  Decimal?  @db.Decimal(10, 2)
+  hourlyRate  Decimal?
   description String?
   imageUrl    String?
   createdAt   DateTime  @default(now())
