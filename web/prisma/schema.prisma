@@ -1,0 +1,60 @@
+// Prisma schema for boat hire website
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+}
+
+model Boat {
+  id          Int       @id @default(autoincrement())
+  name        String
+  type        String?
+  capacity    Int
+  hourlyRate  Decimal?  @db.Decimal(10, 2)
+  description String?
+  imageUrl    String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  bookings    Booking[]
+}
+
+model Customer {
+  id        Int       @id @default(autoincrement())
+  name      String
+  email     String    @unique
+  phone     String?
+  notes     String?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  bookings  Booking[]
+}
+
+model Booking {
+  id          Int           @id @default(autoincrement())
+  boatId      Int
+  customerId  Int
+  startTime   DateTime
+  endTime     DateTime
+  status      BookingStatus @default(PENDING)
+  message     String?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  boat     Boat     @relation(fields: [boatId], references: [id])
+  customer Customer @relation(fields: [customerId], references: [id])
+
+  @@index([boatId, startTime])
+  @@index([customerId, startTime])
+}
+
+
