@@ -4,7 +4,7 @@ export default async function Home() {
   const boats = await prisma.boat.findMany({ orderBy: { name: "asc" } });
 
   return (
-    <div className="container mx-auto p-6 space-y-8">
+    <div className="container mx-auto p-6 space-y-8" suppressHydrationWarning>
       <div>
         <h1 className="text-3xl font-bold">Boat Hire</h1>
         <p className="text-gray-600">Browse boats and send an enquiry.</p>
